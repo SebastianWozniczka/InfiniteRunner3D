@@ -23,6 +23,8 @@ public class CharacterSidewaysMovement : MonoBehaviour
     public float Speed = 6.0f;
     //Max gameobject
     public Transform CharacterGO;
+
+    private float timer;
     
     IInputDetector inputDetector = null;
 
@@ -41,6 +43,8 @@ public class CharacterSidewaysMovement : MonoBehaviour
         anim = CharacterGO.GetComponent<Animator>();
         inputDetector = GetComponent<IInputDetector>();
         controller = GetComponent<CharacterController>();
+
+        timer = 0;
     }
 
     // Update is called once per frame
@@ -106,15 +110,26 @@ public class CharacterSidewaysMovement : MonoBehaviour
     private void DetectJumpOrSwipeLeftRight()
     {
         var inputDirection = inputDetector.DetectInputDirection();
-        if (controller.isGrounded && inputDirection.HasValue && inputDirection == InputDirection.Top
-            && !isChangingLane)
+        if (controller.isGrounded && inputDirection.HasValue && inputDirection == InputDirection.Flip)
+        {
+            moveDirection.y = JumpSpeed;
+            anim.SetBool(Constants.AnimationFlip, true);
+
+        }
+
+        else if (controller.isGrounded && inputDirection.HasValue && inputDirection == InputDirection.Top)
         {
             moveDirection.y = JumpSpeed;
             anim.SetBool(Constants.AnimationJump, true);
+
         }
+
         else
         {
+            anim.SetBool(Constants.AnimationFlip, false);
             anim.SetBool(Constants.AnimationJump, false);
+            anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot, 50);
+            anim.SetIKRotationWeight(AvatarIKGoal.RightFoot, 50);
         }
 
 

@@ -7,6 +7,8 @@ public class ArrowKeysDetector : MonoBehaviour, IInputDetector
     {
         if (Input.GetKeyUp(KeyCode.UpArrow))
             return InputDirection.Top;
+        else if (Input.GetKeyUp(KeyCode.Space))
+            return InputDirection.Flip;
         else if (Input.GetKeyUp(KeyCode.DownArrow))
             return InputDirection.Bottom;
         else if (Input.GetKeyUp(KeyCode.RightArrow))

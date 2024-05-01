@@ -12,7 +12,7 @@ public class CharacterRotateMovement : MonoBehaviour
     private CharacterController controller;
     private Animator anim;
 
-    public float JumpSpeed = 8.0f;
+    public float JumpSpeed = 1.0f;
     public float Speed = 6.0f;
     public Transform CharacterGO;
 
@@ -91,14 +91,26 @@ public class CharacterRotateMovement : MonoBehaviour
     private void DetectJumpOrSwipeLeftRight()
     {
         var inputDirection = inputDetector.DetectInputDirection();
-        if (controller.isGrounded && inputDirection.HasValue && inputDirection == InputDirection.Top)
+        if (controller.isGrounded && inputDirection.HasValue && inputDirection == InputDirection.Flip)
+        {
+            moveDirection.y = JumpSpeed;
+            anim.SetBool(Constants.AnimationFlip, true);
+
+        }
+
+       else if (controller.isGrounded && inputDirection.HasValue && inputDirection == InputDirection.Top)
         {
             moveDirection.y = JumpSpeed;
             anim.SetBool(Constants.AnimationJump, true);
+
         }
+
         else
         {
+              anim.SetBool(Constants.AnimationFlip, false);
             anim.SetBool(Constants.AnimationJump, false);
+            anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot, 50);
+            anim.SetIKRotationWeight(AvatarIKGoal.RightFoot, 50);
         }
 
 

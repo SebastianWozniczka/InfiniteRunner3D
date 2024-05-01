@@ -12,6 +12,7 @@ namespace Assets.Scripts
 
     public enum InputDirection
     {
-        Left, Right, Top, Bottom
+        Left, Right, Top, Bottom, Flip
+       
     }
 }
