@@ -107,7 +107,7 @@ public class CharacterRotateMovement : MonoBehaviour
 
         else
         {
-              anim.SetBool(Constants.AnimationFlip, false);
+            anim.SetBool(Constants.AnimationFlip, false);
             anim.SetBool(Constants.AnimationJump, false);
             anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot, 50);
             anim.SetIKRotationWeight(AvatarIKGoal.RightFoot, 50);

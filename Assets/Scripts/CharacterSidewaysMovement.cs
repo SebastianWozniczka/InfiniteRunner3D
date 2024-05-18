@@ -12,7 +12,7 @@ public class CharacterSidewaysMovement : MonoBehaviour
     private CharacterController controller;
     private Animator anim;
 
-    private bool isChangingLane = false;
+    public bool isChangingLane = false;
     private Vector3 locationAfterChangingLane;
     //distance character will move sideways
     private Vector3 sidewaysMovementDistance = Vector3.right * 2f;
@@ -23,8 +23,6 @@ public class CharacterSidewaysMovement : MonoBehaviour
     public float Speed = 6.0f;
     //Max gameobject
     public Transform CharacterGO;
-
-    private float timer;
     
     IInputDetector inputDetector = null;
 
@@ -44,12 +42,13 @@ public class CharacterSidewaysMovement : MonoBehaviour
         inputDetector = GetComponent<IInputDetector>();
         controller = GetComponent<CharacterController>();
 
-        timer = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+
+       
         switch (GameManager.Instance.GameState)
         {
             case GameState.Start:
@@ -114,28 +113,32 @@ public class CharacterSidewaysMovement : MonoBehaviour
         {
             moveDirection.y = JumpSpeed;
             anim.SetBool(Constants.AnimationFlip, true);
-
+           
         }
 
         else if (controller.isGrounded && inputDirection.HasValue && inputDirection == InputDirection.Top)
         {
-            moveDirection.y = JumpSpeed;
+            moveDirection.y = JumpSpeed;   
             anim.SetBool(Constants.AnimationJump, true);
-
+            
+            //anim.SetIKHintPositionWeight(AvatarIKHint.RightKnee, -150);
+            //anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot, 50);
+            //anim.SetIKRotationWeight(AvatarIKGoal.RightFoot, 50);
         }
 
         else
         {
             anim.SetBool(Constants.AnimationFlip, false);
             anim.SetBool(Constants.AnimationJump, false);
-            anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot, 50);
-            anim.SetIKRotationWeight(AvatarIKGoal.RightFoot, 50);
+            
+            
+          //  isChangingLane = true;
         }
 
 
         if (controller.isGrounded && inputDirection.HasValue && !isChangingLane)
         {
-            isChangingLane = true;
+           
 
             if (inputDirection == InputDirection.Left)
             {
@@ -147,6 +150,15 @@ public class CharacterSidewaysMovement : MonoBehaviour
                 locationAfterChangingLane = transform.position + sidewaysMovementDistance;
                 moveDirection.x = SideWaysSpeed;
             }
+
+
+
+            isChangingLane = true;
+        }
+
+        if(isChangingLane = false && moveDirection.x == 0 && inputDirection == InputDirection.Top)
+        {
+            isChangingLane = false;
         }
 
 
@@ -159,7 +171,12 @@ public class CharacterSidewaysMovement : MonoBehaviour
         {
             isChangingLane = false;
             moveDirection.x = 0;
+
+
+
         }
+
+
     }
 
     
